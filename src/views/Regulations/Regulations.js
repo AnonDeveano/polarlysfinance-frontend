@@ -6,7 +6,7 @@ import { Typography, Table, TableBody, TableCell, TableContainer, TableHead, Tab
 import Page from '../../components/Page';
 import RegulationsImage from '../../assets/img/regulations_bg.png';
 import { createGlobalStyle } from 'styled-components';
-import useTombFinance from '../../hooks/useTombFinance';
+import usePolarlysFinance from '../../hooks/usePolarlysFinance';
 
 const BackgroundImage = createGlobalStyle`
   body, html {
@@ -45,15 +45,15 @@ const StyledTableRow = withStyles((theme) => ({
 
 const Regulations = () => {
   const classes = useStyles();
-  const tombFinance = useTombFinance();
+  const polarlysFinance = usePolarlysFinance();
   const [rows, setRows] = useState(null);
-  function createData(epoch, dao, dev, masonry, bondsBought, bondsRedeemed) {
-    var sum = (Number(dao) + Number(dev) + Number(masonry)).toFixed(2);
-    return { epoch, dao, dev, masonry, sum, bondsBought, bondsRedeemed };
+  function createData(epoch, dao, dev, warpdrive, bondsBought, bondsRedeemed) {
+    var sum = (Number(dao) + Number(dev) + Number(warpdrive)).toFixed(2);
+    return { epoch, dao, dev, warpdrive, sum, bondsBought, bondsRedeemed };
   }
   useEffect(() => {
-    if (tombFinance) {
-      const thisData = tombFinance.listenForRegulationsEvents();
+    if (polarlysFinance) {
+      const thisData = polarlysFinance.listenForRegulationsEvents();
       thisData.then((elements) => {
         setRows(
           elements
@@ -63,7 +63,7 @@ const Regulations = () => {
                 element.epoch,
                 element.daoFund,
                 element.devFund,
-                element.masonryFund,
+                element.warpdriveFund,
                 element.bondsBought,
                 element.bondsRedeemed,
               ),
@@ -71,7 +71,7 @@ const Regulations = () => {
         );
       });
     }
-  }, [tombFinance]);
+  }, [polarlysFinance]);
 
   return (
     <Page>
@@ -84,7 +84,7 @@ const Regulations = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell align="center">Epoch</StyledTableCell>
-              <StyledTableCell align="center">Masonry funding</StyledTableCell>
+              <StyledTableCell align="center">WarpDrive funding</StyledTableCell>
               <StyledTableCell align="center">DAO funding</StyledTableCell>
               <StyledTableCell align="center">DEV funding</StyledTableCell>
               <StyledTableCell align="center">Total</StyledTableCell>
@@ -101,7 +101,7 @@ const Regulations = () => {
                 <StyledTableCell style={{ color: '#2c2560' }} align="center" component="th" scope="row">
                   {row.epoch}
                 </StyledTableCell>
-                <StyledTableCell align="center">{row.masonry}</StyledTableCell>
+                <StyledTableCell align="center">{row.warpdrive}</StyledTableCell>
                 <StyledTableCell align="center">{row.dao}</StyledTableCell>
                 <StyledTableCell align="center">{row.dev}</StyledTableCell>
                 <StyledTableCell align="center">{row.sum}</StyledTableCell>

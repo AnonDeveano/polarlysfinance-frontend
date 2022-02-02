@@ -23,8 +23,8 @@ const MigrationDisclaimerModal: React.FC<MigrationDisclaimerModalProps> = ({ onC
       <ModalTitle text={`Migration Disclaimer`} />
       <div>
         <StyledText>
-          Due to the upgrade, all Masonry functionalities other than [Settle and withdraw] has been disabled for users
-          who staked in legacy Masonry. Please withdraw all balances from the previous masonry after the update.
+          Due to the upgrade, all Warp Drive functionalities other than [Settle and withdraw] has been disabled for users
+          who staked in legacy Warp Drive. Please withdraw all balances from the previous warp drive after the update.
         </StyledText>
       </div>
       <ModalActions>

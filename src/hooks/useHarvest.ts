@@ -1,18 +1,18 @@
 import { useCallback } from 'react';
-import useTombFinance from './useTombFinance';
+import usePolarlysFinance from './usePolarlysFinance';
 import useHandleTransactionReceipt from './useHandleTransactionReceipt';
-import { Bank } from '../tomb-finance';
+import { Bank } from '../polarlys-finance';
 
 const useHarvest = (bank: Bank) => {
-  const tombFinance = useTombFinance();
+  const polarlysFinance = usePolarlysFinance();
   const handleTransactionReceipt = useHandleTransactionReceipt();
 
   const handleReward = useCallback(() => {
     handleTransactionReceipt(
-      tombFinance.harvest(bank.contract, bank.poolId),
+      polarlysFinance.harvest(bank.contract, bank.poolId),
       `Claim ${bank.earnTokenName} from ${bank.contract}`,
     );
-  }, [bank, tombFinance, handleTransactionReceipt]);
+  }, [bank, polarlysFinance, handleTransactionReceipt]);
 
   return { onReward: handleReward };
 };

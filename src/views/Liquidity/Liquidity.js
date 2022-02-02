@@ -4,15 +4,15 @@ import { createGlobalStyle } from 'styled-components';
 import HomeImage from '../../assets/img/home.png';
 import useLpStats from '../../hooks/useLpStats';
 import { Box, Button, Grid, Paper, Typography } from '@material-ui/core';
-import useTombStats from '../../hooks/useTombStats';
+import useNebulaStats from '../../hooks/useNebulaStats';
 import TokenInput from '../../components/TokenInput';
-import useTombFinance from '../../hooks/useTombFinance';
+import usePolarlysFinance from '../../hooks/usePolarlysFinance';
 import { useWallet } from 'use-wallet';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import { getDisplayBalance } from '../../utils/formatBalance';
 import useApproveTaxOffice from '../../hooks/useApproveTaxOffice';
 import { ApprovalState } from '../../hooks/useApprove';
-import useProvideTombFtmLP from '../../hooks/useProvideTombFtmLP';
+import useProvideNebulaLP from '../../hooks/useProvideNebulaLP';
 import { Alert } from '@material-ui/lab';
 
 const BackgroundImage = createGlobalStyle`
@@ -26,56 +26,56 @@ function isNumeric(n) {
 }
 
 const ProvideLiquidity = () => {
-  const [tombAmount, setTombAmount] = useState(0);
-  const [ftmAmount, setFtmAmount] = useState(0);
+  const [nebulaAmount, setNebulaAmount] = useState(0);
+  const [nearAmount, setNearAmount] = useState(0);
   const [lpTokensAmount, setLpTokensAmount] = useState(0);
   const { balance } = useWallet();
-  const tombStats = useTombStats();
-  const tombFinance = useTombFinance();
+  const nebulaStats = useNebulaStats();
+  const polarlysFinance = usePolarlysFinance();
   const [approveTaxOfficeStatus, approveTaxOffice] = useApproveTaxOffice();
-  const tombBalance = useTokenBalance(tombFinance.TOMB);
-  const ftmBalance = (balance / 1e18).toFixed(4);
-  const { onProvideTombFtmLP } = useProvideTombFtmLP();
-  const tombFtmLpStats = useLpStats('TOMB-FTM-LP');
+  const nebulaBalance = useTokenBalance(polarlysFinance.NEBULA);
+  const nearBalance = (balance / 1e18).toFixed(4);
+  const { onProvideNebulaNearLP } = useProvideNebulaLP();
+  const nebulaNearLpStats = useLpStats('NEBULA-NEAR-LP');
 
-  const tombLPStats = useMemo(() => (tombFtmLpStats ? tombFtmLpStats : null), [tombFtmLpStats]);
-  const tombPriceInFTM = useMemo(() => (tombStats ? Number(tombStats.tokenInFtm).toFixed(2) : null), [tombStats]);
-  const ftmPriceInTOMB = useMemo(() => (tombStats ? Number(1 / tombStats.tokenInFtm).toFixed(2) : null), [tombStats]);
+  const nebulaLPStats = useMemo(() => (nebulaNearLpStats ? nebulaNearLpStats : null), [nebulaNearLpStats]);
+  const nebulaPriceInNEAR = useMemo(() => (nebulaStats ? Number(nebulaStats.tokenInNear).toFixed(2) : null), [nebulaStats]);
+  const nearPriceInNEBULA = useMemo(() => (nebulaStats ? Number(1 / nebulaStats.tokenInNear).toFixed(2) : null), [nebulaStats]);
   // const classes = useStyles();
 
-  const handleTombChange = async (e) => {
+  const handleNebulaChange = async (e) => {
     if (e.currentTarget.value === '' || e.currentTarget.value === 0) {
-      setTombAmount(e.currentTarget.value);
+      setNebulaAmount(e.currentTarget.value);
     }
     if (!isNumeric(e.currentTarget.value)) return;
-    setTombAmount(e.currentTarget.value);
-    const quoteFromSpooky = await tombFinance.quoteFromSpooky(e.currentTarget.value, 'TOMB');
-    setFtmAmount(quoteFromSpooky);
-    setLpTokensAmount(quoteFromSpooky / tombLPStats.ftmAmount);
+    setNebulaAmount(e.currentTarget.value);
+    const quoteFromSpooky = await polarlysFinance.quoteFromSpooky(e.currentTarget.value, 'NEBULA');
+    setNearAmount(quoteFromSpooky);
+    setLpTokensAmount(quoteFromSpooky / nebulaLPStats.nearAmount);
   };
 
-  const handleFtmChange = async (e) => {
+  const handleNearChange = async (e) => {
     if (e.currentTarget.value === '' || e.currentTarget.value === 0) {
-      setFtmAmount(e.currentTarget.value);
+      setNearAmount(e.currentTarget.value);
     }
     if (!isNumeric(e.currentTarget.value)) return;
-    setFtmAmount(e.currentTarget.value);
-    const quoteFromSpooky = await tombFinance.quoteFromSpooky(e.currentTarget.value, 'FTM');
-    setTombAmount(quoteFromSpooky);
+    setNearAmount(e.currentTarget.value);
+    const quoteFromSpooky = await polarlysFinance.quoteFromSpooky(e.currentTarget.value, 'NEAR');
+    setNebulaAmount(quoteFromSpooky);
 
-    setLpTokensAmount(quoteFromSpooky / tombLPStats.tokenAmount);
+    setLpTokensAmount(quoteFromSpooky / nebulaLPStats.tokenAmount);
   };
-  const handleTombSelectMax = async () => {
-    const quoteFromSpooky = await tombFinance.quoteFromSpooky(getDisplayBalance(tombBalance), 'TOMB');
-    setTombAmount(getDisplayBalance(tombBalance));
-    setFtmAmount(quoteFromSpooky);
-    setLpTokensAmount(quoteFromSpooky / tombLPStats.ftmAmount);
+  const handleNebulaSelectMax = async () => {
+    const quoteFromSpooky = await polarlysFinance.quoteFromSpooky(getDisplayBalance(nebulaBalance), 'NEBULA');
+    setNebulaAmount(getDisplayBalance(nebulaBalance));
+    setNearAmount(quoteFromSpooky);
+    setLpTokensAmount(quoteFromSpooky / nebulaLPStats.nearAmount);
   };
-  const handleFtmSelectMax = async () => {
-    const quoteFromSpooky = await tombFinance.quoteFromSpooky(ftmBalance, 'FTM');
-    setFtmAmount(ftmBalance);
-    setTombAmount(quoteFromSpooky);
-    setLpTokensAmount(ftmBalance / tombLPStats.ftmAmount);
+  const handleNearSelectMax = async () => {
+    const quoteFromSpooky = await polarlysFinance.quoteFromSpooky(nearBalance, 'NEAR');
+    setNearAmount(nearBalance);
+    setNebulaAmount(quoteFromSpooky);
+    setLpTokensAmount(nearBalance / nebulaLPStats.nearAmount);
   };
   return (
     <Page>
@@ -87,7 +87,7 @@ const ProvideLiquidity = () => {
       <Grid container justify="center">
         <Box style={{ width: '600px' }}>
           <Alert variant="filled" severity="warning" style={{ marginBottom: '10px' }}>
-            <b>This and <a href="https://spookyswap.finance/"  rel="noopener noreferrer" target="_blank">Spookyswap</a> are the only ways to provide Liquidity on TOMB-FTM pair without paying tax.</b>
+            <b>This and <a href="https://spookyswap.finance/" rel="noopener noreferrer" target="_blank">Spookyswap</a> are the only ways to provide Liquidity on NEBULA-NEAR pair without paying tax.</b>
           </Alert>
           <Grid item xs={12} sm={12}>
             <Paper>
@@ -97,32 +97,32 @@ const ProvideLiquidity = () => {
                     <Grid container>
                       <Grid item xs={12}>
                         <TokenInput
-                          onSelectMax={handleTombSelectMax}
-                          onChange={handleTombChange}
-                          value={tombAmount}
-                          max={getDisplayBalance(tombBalance)}
-                          symbol={'TOMB'}
+                          onSelectMax={handleNebulaSelectMax}
+                          onChange={handleNebulaChange}
+                          value={nebulaAmount}
+                          max={getDisplayBalance(nebulaBalance)}
+                          symbol={'NEBULA'}
                         ></TokenInput>
                       </Grid>
                       <Grid item xs={12}>
                         <TokenInput
-                          onSelectMax={handleFtmSelectMax}
-                          onChange={handleFtmChange}
-                          value={ftmAmount}
-                          max={ftmBalance}
-                          symbol={'FTM'}
+                          onSelectMax={handleNearSelectMax}
+                          onChange={handleNearChange}
+                          value={nearAmount}
+                          max={nearBalance}
+                          symbol={'NEAR'}
                         ></TokenInput>
                       </Grid>
                       <Grid item xs={12}>
-                        <p>1 TOMB = {tombPriceInFTM} FTM</p>
-                        <p>1 FTM = {ftmPriceInTOMB} TOMB</p>
+                        <p>1 NEBULA = {nebulaPriceInNEAR} NEAR</p>
+                        <p>1 NEAR = {nearPriceInNEBULA} NEBULA</p>
                         <p>LP tokens ≈ {lpTokensAmount.toFixed(2)}</p>
                       </Grid>
                       <Grid xs={12} justifyContent="center" style={{ textAlign: 'center' }}>
                         {approveTaxOfficeStatus === ApprovalState.APPROVED ? (
                           <Button
                             variant="contained"
-                            onClick={() => onProvideTombFtmLP(ftmAmount.toString(), tombAmount.toString())}
+                            onClick={() => onProvideNebulaNearLP(nearAmount.toString(), nebulaAmount.toString())}
                             color="primary"
                             style={{ margin: '0 10px', color: '#fff' }}
                           >

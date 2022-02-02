@@ -10,14 +10,14 @@ import ExchangeCard from './components/ExchangeCard';
 import styled from 'styled-components';
 import Spacer from '../../components/Spacer';
 import useBondStats from '../../hooks/useBondStats';
-import useTombFinance from '../../hooks/useTombFinance';
+import usePolarlysFinance from '../../hooks/usePolarlysFinance';
 import useCashPriceInLastTWAP from '../../hooks/useCashPriceInLastTWAP';
 import { useTransactionAdder } from '../../state/transactions/hooks';
 import ExchangeStat from './components/ExchangeStat';
 import useTokenBalance from '../../hooks/useTokenBalance';
 import useBondsPurchasable from '../../hooks/useBondsPurchasable';
 import { getDisplayBalance } from '../../utils/formatBalance';
-import { BOND_REDEEM_PRICE, BOND_REDEEM_PRICE_BN } from '../../tomb-finance/constants';
+import { BOND_REDEEM_PRICE, BOND_REDEEM_PRICE_BN } from '../../polarlys-finance/constants';
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -29,33 +29,33 @@ const BackgroundImage = createGlobalStyle`
 const Pit: React.FC = () => {
   const { path } = useRouteMatch();
   const { account } = useWallet();
-  const tombFinance = useTombFinance();
+  const polarlysFinance = usePolarlysFinance();
   const addTransaction = useTransactionAdder();
   const bondStat = useBondStats();
   const cashPrice = useCashPriceInLastTWAP();
   const bondsPurchasable = useBondsPurchasable();
 
-  const bondBalance = useTokenBalance(tombFinance?.TBOND);
+  const bondBalance = useTokenBalance(polarlysFinance?.STARDUST);
 
   const handleBuyBonds = useCallback(
     async (amount: string) => {
-      const tx = await tombFinance.buyBonds(amount);
+      const tx = await polarlysFinance.buyBonds(amount);
       addTransaction(tx, {
-        summary: `Buy ${Number(amount).toFixed(2)} TBOND with ${amount} TOMB`,
+        summary: `Buy ${Number(amount).toFixed(2)} STARDUST with ${amount} NEBULA`,
       });
     },
-    [tombFinance, addTransaction],
+    [polarlysFinance, addTransaction],
   );
 
   const handleRedeemBonds = useCallback(
     async (amount: string) => {
-      const tx = await tombFinance.redeemBonds(amount);
-      addTransaction(tx, { summary: `Redeem ${amount} TBOND` });
+      const tx = await polarlysFinance.redeemBonds(amount);
+      addTransaction(tx, { summary: `Redeem ${amount} STARDUST` });
     },
-    [tombFinance, addTransaction],
+    [polarlysFinance, addTransaction],
   );
   const isBondRedeemable = useMemo(() => cashPrice.gt(BOND_REDEEM_PRICE_BN), [cashPrice]);
-  const isBondPurchasable = useMemo(() => Number(bondStat?.tokenInFtm) < 1.01, [bondStat]);
+  const isBondPurchasable = useMemo(() => Number(bondStat?.tokenInNear) < 1.01, [bondStat]);
 
   return (
     <Switch>
@@ -70,14 +70,14 @@ const Pit: React.FC = () => {
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Purchase"
-                  fromToken={tombFinance.TOMB}
-                  fromTokenName="TOMB"
-                  toToken={tombFinance.TBOND}
-                  toTokenName="TBOND"
+                  fromToken={polarlysFinance.NEBULA}
+                  fromTokenName="NEBULA"
+                  toToken={polarlysFinance.STARDUST}
+                  toTokenName="STARDUST"
                   priceDesc={
                     !isBondPurchasable
-                      ? 'TOMB is over peg'
-                      : getDisplayBalance(bondsPurchasable, 18, 4) + ' TBOND available for purchase'
+                      ? 'NEBULA is over peg'
+                      : getDisplayBalance(bondsPurchasable, 18, 4) + ' STARDUST available for purchase'
                   }
                   onExchange={handleBuyBonds}
                   disabled={!bondStat || isBondRedeemable}
@@ -85,28 +85,28 @@ const Pit: React.FC = () => {
               </StyledCardWrapper>
               <StyledStatsWrapper>
                 <ExchangeStat
-                  tokenName="TOMB"
+                  tokenName="NEBULA"
                   description="Last-Hour TWAP Price"
                   price={getDisplayBalance(cashPrice, 18, 4)}
                 />
                 <Spacer size="md" />
                 <ExchangeStat
-                  tokenName="TBOND"
-                  description="Current Price: (TOMB)^2"
-                  price={Number(bondStat?.tokenInFtm).toFixed(2) || '-'}
+                  tokenName="STARDUST"
+                  description="Current Price: (NEBULA)^2"
+                  price={Number(bondStat?.tokenInNear).toFixed(2) || '-'}
                 />
               </StyledStatsWrapper>
               <StyledCardWrapper>
                 <ExchangeCard
                   action="Redeem"
-                  fromToken={tombFinance.TBOND}
-                  fromTokenName="TBOND"
-                  toToken={tombFinance.TOMB}
-                  toTokenName="TOMB"
-                  priceDesc={`${getDisplayBalance(bondBalance)} TBOND Available in wallet`}
+                  fromToken={polarlysFinance.STARDUST}
+                  fromTokenName="STARDUST"
+                  toToken={polarlysFinance.NEBULA}
+                  toTokenName="NEBULA"
+                  priceDesc={`${getDisplayBalance(bondBalance)} STARDUST Available in wallet`}
                   onExchange={handleRedeemBonds}
                   disabled={!bondStat || bondBalance.eq(0) || !isBondRedeemable}
-                  disabledDescription={!isBondRedeemable ? `Enabled when TOMB > ${BOND_REDEEM_PRICE}FTM` : null}
+                  disabledDescription={!isBondRedeemable ? `Enabled when NEBULA > ${BOND_REDEEM_PRICE}NEAR` : null}
                 />
               </StyledCardWrapper>
             </StyledBond>

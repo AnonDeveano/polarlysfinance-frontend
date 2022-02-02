@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react';
-import useTombFinance from './useTombFinance';
+import usePolarlysFinance from './usePolarlysFinance';
 import useRefresh from './useRefresh';
 
 const useTotalValueLocked = () => {
   const [totalValueLocked, setTotalValueLocked] = useState<Number>(0);
   const { slowRefresh } = useRefresh();
-  const tombFinance = useTombFinance();
+  const polarlysFinance = usePolarlysFinance();
 
   useEffect(() => {
     async function fetchTVL() {
       try {
-        setTotalValueLocked(await tombFinance.getTotalValueLocked());
+        setTotalValueLocked(await polarlysFinance.getTotalValueLocked());
       }
-      catch(err){
+      catch (err) {
         console.error(err);
       }
     }
     fetchTVL();
-  }, [setTotalValueLocked, tombFinance, slowRefresh]);
+  }, [setTotalValueLocked, polarlysFinance, slowRefresh]);
 
   return totalValueLocked;
 };

@@ -14,24 +14,24 @@ import { Alert } from '@material-ui/lab';
 import UnlockWallet from '../../components/UnlockWallet';
 import Page from '../../components/Page';
 
-import useRedeemOnMasonry from '../../hooks/useRedeemOnMasonry';
-import useStakedBalanceOnMasonry from '../../hooks/useStakedBalanceOnMasonry';
+import useRedeemOnWarpDrive from '../../hooks/useRedeemOnWarpDrive';
+import useStakedBalanceOnWarpDrive from '../../hooks/useStakedBalanceOnWarpDrive';
 import { getDisplayBalance } from '../../utils/formatBalance';
 import useCurrentEpoch from '../../hooks/useCurrentEpoch';
-import useFetchMasonryAPR from '../../hooks/useFetchMasonryAPR';
+import useFetchWarpDriveAPR from '../../hooks/useFetchWarpDriveAPR';
 
 import useCashPriceInEstimatedTWAP from '../../hooks/useCashPriceInEstimatedTWAP';
 import useTreasuryAllocationTimes from '../../hooks/useTreasuryAllocationTimes';
-import useTotalStakedOnMasonry from '../../hooks/useTotalStakedOnMasonry';
-import useClaimRewardCheck from '../../hooks/masonry/useClaimRewardCheck';
-import useWithdrawCheck from '../../hooks/masonry/useWithdrawCheck';
+import useTotalStakedOnWarpDrive from '../../hooks/useTotalStakedOnWarpDrive';
+import useClaimRewardCheck from '../../hooks/warpdrive/useClaimRewardCheck';
+import useWithdrawCheck from '../../hooks/warpdrive/useWithdrawCheck';
 import ProgressCountdown from './components/ProgressCountdown';
-import MasonryImage from '../../assets/img/masonry.png';
+import WarpDriveImage from '../../assets/img/warpdrive.png';
 import { createGlobalStyle } from 'styled-components';
 
 const BackgroundImage = createGlobalStyle`
   body, html {
-    background: url(${MasonryImage}) no-repeat !important;
+    background: url(${WarpDriveImage}) no-repeat !important;
     background-size: cover !important;
   }
 `;
@@ -45,15 +45,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Masonry = () => {
+const WarpDrive = () => {
   const classes = useStyles();
   const { account } = useWallet();
-  const { onRedeem } = useRedeemOnMasonry();
-  const stakedBalance = useStakedBalanceOnMasonry();
+  const { onRedeem } = useRedeemOnWarpDrive();
+  const stakedBalance = useStakedBalanceOnWarpDrive();
   const currentEpoch = useCurrentEpoch();
   const cashStat = useCashPriceInEstimatedTWAP();
-  const totalStaked = useTotalStakedOnMasonry();
-  const masonryAPR = useFetchMasonryAPR();
+  const totalStaked = useTotalStakedOnWarpDrive();
+  const warpdriveAPR = useFetchWarpDriveAPR();
   const canClaimReward = useClaimRewardCheck();
   const canWithdraw = useWithdrawCheck();
   const scalingFactor = useMemo(() => (cashStat ? Number(cashStat.priceInDollars).toFixed(4) : null), [cashStat]);
@@ -65,7 +65,7 @@ const Masonry = () => {
       {!!account ? (
         <>
           <Typography color="textPrimary" align="center" variant="h3" gutterBottom>
-            Masonry
+            WarpDrive
           </Typography>
           <Box mt={5}>
             <Grid container justify="center" spacing={3}>
@@ -89,7 +89,7 @@ const Masonry = () => {
                 <Card className={classes.gridItem}>
                   <CardContent align="center">
                     <Typography>
-                      TOMB Price<small>(TWAP)</small>
+                      NEBULA Price<small>(TWAP)</small>
                     </Typography>
                     <Typography>{scalingFactor}</Typography>
                   </CardContent>
@@ -99,14 +99,14 @@ const Masonry = () => {
                 <Card className={classes.gridItem}>
                   <CardContent align="center">
                     <Typography>APR</Typography>
-                    <Typography>{masonryAPR.toFixed(2)}%</Typography>
+                    <Typography>{warpdriveAPR.toFixed(2)}%</Typography>
                   </CardContent>
                 </Card>
               </Grid>
               <Grid item xs={12} md={2} lg={2}>
                 <Card className={classes.gridItem}>
                   <CardContent align="center">
-                    <Typography>TSHARES Staked</Typography>
+                    <Typography>BOREALISS Staked</Typography>
                     <Typography>{getDisplayBalance(totalStaked)}</Typography>
                   </CardContent>
                 </Card>
@@ -116,7 +116,7 @@ const Masonry = () => {
             <Grid container justify="center">
               <Box mt={3} style={{ width: '600px' }}>
                 <Alert variant="filled" severity="warning">
-                  Staked TSHAREs can only be withdrawn after 6 epochs since deposit.
+                  Staked BOREALISs can only be withdrawn after 6 epochs since deposit.
                 </Alert>
               </Box>
             </Grid>
@@ -214,4 +214,4 @@ const StyledCardWrapper = styled.div`
   }
 `;
 
-export default Masonry;
+export default WarpDrive;

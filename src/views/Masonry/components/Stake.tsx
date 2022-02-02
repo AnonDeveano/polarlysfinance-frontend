@@ -15,30 +15,30 @@ import Value from '../../../components/Value';
 import useApprove, { ApprovalState } from '../../../hooks/useApprove';
 import useModal from '../../../hooks/useModal';
 import useTokenBalance from '../../../hooks/useTokenBalance';
-import useWithdrawCheck from '../../../hooks/masonry/useWithdrawCheck';
+import useWithdrawCheck from '../../../hooks/warpdrive/useWithdrawCheck';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
-import useTombFinance from '../../../hooks/useTombFinance';
+import usePolarlysFinance from '../../../hooks/usePolarlysFinance';
 import ProgressCountdown from './../components/ProgressCountdown';
-import useStakedBalanceOnMasonry from '../../../hooks/useStakedBalanceOnMasonry';
+import useStakedBalanceOnWarpDrive from '../../../hooks/useStakedBalanceOnWarpDrive';
 import useStakedTokenPriceInDollars from '../../../hooks/useStakedTokenPriceInDollars';
-import useUnstakeTimerMasonry from '../../../hooks/masonry/useUnstakeTimerMasonry';
+import useUnstakeTimerWarpDrive from '../../../hooks/warpdrive/useUnstakeTimerWarpDrive';
 import TokenSymbol from '../../../components/TokenSymbol';
-import useStakeToMasonry from '../../../hooks/useStakeToMasonry';
-import useWithdrawFromMasonry from '../../../hooks/useWithdrawFromMasonry';
+import useStakeToWarpDrive from '../../../hooks/useStakeToWarpDrive';
+import withdrawBorealisFromWarpDrive from '../../../hooks/withdrawBorealisFromWarpDrive';
 
 const Stake: React.FC = () => {
-  const tombFinance = useTombFinance();
-  const [approveStatus, approve] = useApprove(tombFinance.TSHARE, tombFinance.contracts.Masonry.address);
+  const polarlysFinance = usePolarlysFinance();
+  const [approveStatus, approve] = useApprove(polarlysFinance.BOREALIS, polarlysFinance.contracts.WarpDrive.address);
 
-  const tokenBalance = useTokenBalance(tombFinance.TSHARE);
-  const stakedBalance = useStakedBalanceOnMasonry();
-  const { from, to } = useUnstakeTimerMasonry();
+  const tokenBalance = useTokenBalance(polarlysFinance.BOREALIS);
+  const stakedBalance = useStakedBalanceOnWarpDrive();
+  const { from, to } = useUnstakeTimerWarpDrive();
 
-  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('TSHARE', tombFinance.TSHARE);
+  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('BOREALIS', polarlysFinance.BOREALIS);
   const tokenPriceInDollars = useMemo(
     () =>
       stakedTokenPriceInDollars
@@ -48,9 +48,9 @@ const Stake: React.FC = () => {
   );
   // const isOldBoardroomMember = boardroomVersion !== 'latest';
 
-  const { onStake } = useStakeToMasonry();
-  const { onWithdraw } = useWithdrawFromMasonry();
-  const canWithdrawFromMasonry = useWithdrawCheck();
+  const { onStake } = useStakeToWarpDrive();
+  const { onWithdraw } = withdrawBorealisFromWarpDrive();
+  const canWithdrawFromWarpDrive = useWithdrawCheck();
 
   const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
@@ -59,7 +59,7 @@ const Stake: React.FC = () => {
         onStake(value);
         onDismissDeposit();
       }}
-      tokenName={'TShare'}
+      tokenName={'Borealis'}
     />,
   );
 
@@ -70,7 +70,7 @@ const Stake: React.FC = () => {
         onWithdraw(value);
         onDismissWithdraw();
       }}
-      tokenName={'TShare'}
+      tokenName={'Borealis'}
     />,
   );
 
@@ -81,11 +81,11 @@ const Stake: React.FC = () => {
           <StyledCardContentInner>
             <StyledCardHeader>
               <CardIcon>
-                <TokenSymbol symbol="TSHARE" />
+                <TokenSymbol symbol="BOREALIS" />
               </CardIcon>
               <Value value={getDisplayBalance(stakedBalance)} />
               <Label text={`≈ $${tokenPriceInDollars}`} />
-              <Label text={'TSHARE Staked'} />
+              <Label text={'BOREALIS Staked'} />
             </StyledCardHeader>
             <StyledCardActions>
               {approveStatus !== ApprovalState.APPROVED ? (
@@ -96,11 +96,11 @@ const Stake: React.FC = () => {
                   style={{ marginTop: '20px' }}
                   onClick={approve}
                 >
-                  Approve TSHARE
+                  Approve BOREALIS
                 </Button>
               ) : (
                 <>
-                  <IconButton disabled={!canWithdrawFromMasonry} onClick={onPresentWithdraw}>
+                  <IconButton disabled={!canWithdrawFromWarpDrive} onClick={onPresentWithdraw}>
                     <RemoveIcon />
                   </IconButton>
                   <StyledActionSpacer />
@@ -114,7 +114,7 @@ const Stake: React.FC = () => {
         </CardContent>
       </Card>
       <Box mt={2} style={{ color: '#FFF' }}>
-        {canWithdrawFromMasonry ? (
+        {canWithdrawFromWarpDrive ? (
           ''
         ) : (
           <Card>

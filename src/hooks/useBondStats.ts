@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react';
-import useTombFinance from './useTombFinance';
-import { TokenStat } from '../tomb-finance/types';
+import usePolarlysFinance from './usePolarlysFinance';
+import { TokenStat } from '../polarlys-finance/types';
 import useRefresh from './useRefresh';
 
 const useBondStats = () => {
   const [stat, setStat] = useState<TokenStat>();
   const { slowRefresh } = useRefresh();
-  const tombFinance = useTombFinance();
+  const polarlysFinance = usePolarlysFinance();
 
   useEffect(() => {
     async function fetchBondPrice() {
       try {
-        setStat(await tombFinance.getBondStat());
+        setStat(await polarlysFinance.gestarDustStat());
       }
-      catch(err){
+      catch (err) {
         console.error(err);
       }
     }
     fetchBondPrice();
-  }, [setStat, tombFinance, slowRefresh]);
+  }, [setStat, polarlysFinance, slowRefresh]);
 
   return stat;
 };

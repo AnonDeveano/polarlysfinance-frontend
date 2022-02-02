@@ -7,28 +7,28 @@ import TokenSymbol from '../../../components/TokenSymbol';
 import Label from '../../../components/Label';
 import Value from '../../../components/Value';
 import CardIcon from '../../../components/CardIcon';
-import useClaimRewardTimerMasonry from '../../../hooks/masonry/useClaimRewardTimerMasonry';
-import useClaimRewardCheck from '../../../hooks/masonry/useClaimRewardCheck';
+import useClaimRewardTimerWarpDrive from '../../../hooks/warpdrive/useClaimRewardTimerWarpDrive';
+import useClaimRewardCheck from '../../../hooks/warpdrive/useClaimRewardCheck';
 import ProgressCountdown from './../components/ProgressCountdown';
-import useHarvestFromMasonry from '../../../hooks/useHarvestFromMasonry';
-import useEarningsOnMasonry from '../../../hooks/useEarningsOnMasonry';
-import useTombStats from '../../../hooks/useTombStats';
+import useHarvestFromWarpDrive from '../../../hooks/useHarvestFromWarpDrive';
+import useEarningsOnWarpDrive from '../../../hooks/useEarningsOnWarpDrive';
+import useNebulaStats from '../../../hooks/useNebulaStats';
 import { getDisplayBalance } from '../../../utils/formatBalance';
 
 const Harvest: React.FC = () => {
-  const tombStats = useTombStats();
-  const { onReward } = useHarvestFromMasonry();
-  const earnings = useEarningsOnMasonry();
+  const nebulaStats = useNebulaStats();
+  const { onReward } = useHarvestFromWarpDrive();
+  const earnings = useEarningsOnWarpDrive();
   const canClaimReward = useClaimRewardCheck();
 
   const tokenPriceInDollars = useMemo(
-    () => (tombStats ? Number(tombStats.priceInDollars).toFixed(2) : null),
-    [tombStats],
+    () => (nebulaStats ? Number(nebulaStats.priceInDollars).toFixed(2) : null),
+    [nebulaStats],
   );
 
   const earnedInDollars = (Number(tokenPriceInDollars) * Number(getDisplayBalance(earnings))).toFixed(2);
 
-  const { from, to } = useClaimRewardTimerMasonry();
+  const { from, to } = useClaimRewardTimerWarpDrive();
 
   return (
     <Box>
@@ -37,11 +37,11 @@ const Harvest: React.FC = () => {
           <StyledCardContentInner>
             <StyledCardHeader>
               <CardIcon>
-                <TokenSymbol symbol="TOMB" />
+                <TokenSymbol symbol="NEBULA" />
               </CardIcon>
               <Value value={getDisplayBalance(earnings)} />
               <Label text={`≈ $${earnedInDollars}`} />
-              <Label text="TOMB Earned" />
+              <Label text="NEBULA Earned" />
             </StyledCardHeader>
             <StyledCardActions>
               <Button

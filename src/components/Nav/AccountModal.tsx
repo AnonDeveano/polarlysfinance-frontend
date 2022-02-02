@@ -6,20 +6,20 @@ import { getDisplayBalance } from '../../utils/formatBalance';
 import Label from '../Label';
 import Modal, { ModalProps } from '../Modal';
 import ModalTitle from '../ModalTitle';
-import useTombFinance from '../../hooks/useTombFinance';
+import usePolarlysFinance from '../../hooks/usePolarlysFinance';
 import TokenSymbol from '../TokenSymbol';
 
 const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
-  const tombFinance = useTombFinance();
+  const polarlysFinance = usePolarlysFinance();
 
-  const tombBalance = useTokenBalance(tombFinance.TOMB);
-  const displayTombBalance = useMemo(() => getDisplayBalance(tombBalance), [tombBalance]);
+  const nebulaBalance = useTokenBalance(polarlysFinance.NEBULA);
+  const displayNebulaBalance = useMemo(() => getDisplayBalance(nebulaBalance), [nebulaBalance]);
 
-  const tshareBalance = useTokenBalance(tombFinance.TSHARE);
-  const displayTshareBalance = useMemo(() => getDisplayBalance(tshareBalance), [tshareBalance]);
+  const borealisBalance = useTokenBalance(polarlysFinance.BOREALIS);
+  const displayBorealisBalance = useMemo(() => getDisplayBalance(borealisBalance), [borealisBalance]);
 
-  const tbondBalance = useTokenBalance(tombFinance.TBOND);
-  const displayTbondBalance = useMemo(() => getDisplayBalance(tbondBalance), [tbondBalance]);
+  const stardustBalance = useTokenBalance(polarlysFinance.STARDUST);
+  const displayStardustBalance = useMemo(() => getDisplayBalance(stardustBalance), [stardustBalance]);
 
   return (
     <Modal>
@@ -27,26 +27,26 @@ const AccountModal: React.FC<ModalProps> = ({ onDismiss }) => {
 
       <Balances>
         <StyledBalanceWrapper>
-          <TokenSymbol symbol="TOMB" />
+          <TokenSymbol symbol="NEBULA" />
           <StyledBalance>
-            <StyledValue>{displayTombBalance}</StyledValue>
-            <Label text="TOMB Available" />
+            <StyledValue>{displayNebulaBalance}</StyledValue>
+            <Label text="NEBULA Available" />
           </StyledBalance>
         </StyledBalanceWrapper>
 
         <StyledBalanceWrapper>
-          <TokenSymbol symbol="TSHARE" />
+          <TokenSymbol symbol="BOREALIS" />
           <StyledBalance>
-            <StyledValue>{displayTshareBalance}</StyledValue>
-            <Label text="TSHARE Available" />
+            <StyledValue>{displayBorealisBalance}</StyledValue>
+            <Label text="BOREALIS Available" />
           </StyledBalance>
         </StyledBalanceWrapper>
 
         <StyledBalanceWrapper>
-          <TokenSymbol symbol="TBOND" />
+          <TokenSymbol symbol="STARDUST" />
           <StyledBalance>
-            <StyledValue>{displayTbondBalance}</StyledValue>
-            <Label text="TBOND Available" />
+            <StyledValue>{displayStardustBalance}</StyledValue>
+            <Label text="STARDUST Available" />
           </StyledBalance>
         </StyledBalanceWrapper>
       </Balances>

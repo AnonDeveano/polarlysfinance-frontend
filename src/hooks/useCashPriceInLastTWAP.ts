@@ -1,21 +1,21 @@
 import { useCallback, useEffect, useState } from 'react';
-import useTombFinance from './useTombFinance';
+import usePolarlysFinance from './usePolarlysFinance';
 import config from '../config';
 import { BigNumber } from 'ethers';
 
 const useCashPriceInLastTWAP = () => {
   const [price, setPrice] = useState<BigNumber>(BigNumber.from(0));
-  const tombFinance = useTombFinance();
+  const polarlysFinance = usePolarlysFinance();
 
   const fetchCashPrice = useCallback(async () => {
-    setPrice(await tombFinance.getTombPriceInLastTWAP());
-  }, [tombFinance]);
+    setPrice(await polarlysFinance.getNebulaPriceInLastTWAP());
+  }, [polarlysFinance]);
 
   useEffect(() => {
-    fetchCashPrice().catch((err) => console.error(`Failed to fetch TOMB price: ${err.stack}`));
+    fetchCashPrice().catch((err) => console.error(`Failed to fetch NEBULA price: ${err.stack}`));
     const refreshInterval = setInterval(fetchCashPrice, config.refreshInterval);
     return () => clearInterval(refreshInterval);
-  }, [setPrice, tombFinance, fetchCashPrice]);
+  }, [setPrice, polarlysFinance, fetchCashPrice]);
 
   return price;
 };

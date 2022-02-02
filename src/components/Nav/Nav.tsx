@@ -95,9 +95,9 @@ const Nav = () => {
         {matches ? (
           <>
             <Typography variant="h6" color="inherit" noWrap className={classes.toolbarTitle}>
-              {/* <a className={ classes.brandLink } href="/">Tomb Finance</a> */}
+              {/* <a className={ classes.brandLink } href="/">Nebula Finance</a> */}
               <Link to="/" color="inherit" className={classes.brandLink}>
-                Tomb Finance
+                Nebula Finance
               </Link>
             </Typography>
             <Box mr={5}>
@@ -107,8 +107,8 @@ const Nav = () => {
               <Link color="textPrimary" to="/cemetery" className={classes.link}>
                 Cemetery
               </Link>
-              <Link color="textPrimary" to="/masonry" className={classes.link}>
-                Masonry
+              <Link color="textPrimary" to="/warpdrive" className={classes.link}>
+                WarpDrive
               </Link>
               <Link color="textPrimary" to="/pit" className={classes.link}>
                 Pit
@@ -122,7 +122,7 @@ const Nav = () => {
               <Link color="textPrimary" to="/regulations" className={classes.link}>
                 Regulations
               </Link>
-              <a href="https://docs.tomb.finance" className={classes.link}>
+              <a href="https://docs.nebula.finance" className={classes.link}>
                 Docs
               </a>
             </Box>
@@ -140,7 +140,7 @@ const Nav = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              Tomb Finance
+              Nebula Finance
             </Typography>
 
             <Drawer
@@ -163,12 +163,12 @@ const Nav = () => {
               <List>
                 <ListItemLink primary="Home" to="/" />
                 <ListItemLink primary="Cemetery" to="/cemetery" />
-                <ListItemLink primary="Masonry" to="/masonry" />
+                <ListItemLink primary="WarpDrive" to="/warpdrive" />
                 <ListItemLink primary="Pit" to="/pit" />
                 <ListItemLink primary="SBS" to="/sbs" />
                 <ListItemLink primary="Liquidity" to="/liquidity" />
                 <ListItemLink primary="Regulations" to="/regulations" />
-                <ListItem button component="a" href="https://docs.tomb.finance">
+                <ListItem button component="a" href="https://docs.nebula.finance">
                   <ListItemText>Docs</ListItemText>
                 </ListItem>
                 <ListItem style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

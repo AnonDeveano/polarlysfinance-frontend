@@ -9,12 +9,12 @@ import PageHeader from '../../components/PageHeader';
 import { Box,/* Paper, Typography,*/ Button, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import Spacer from '../../components/Spacer';
-import useTombFinance from '../../hooks/useTombFinance';
+import usePolarlysFinance from '../../hooks/usePolarlysFinance';
 import { getDisplayBalance/*, getBalance*/ } from '../../utils/formatBalance';
 import { BigNumber/*, ethers*/ } from 'ethers';
-import useSwapTBondToTShare from '../../hooks/TShareSwapper/useSwapTBondToTShare';
+import useSwapStardustToBorealis from '../../hooks/BorealisSwapper/useSwapStarDustToBorealis';
 import useApprove, { ApprovalState } from '../../hooks/useApprove';
-import useTShareSwapperStats from '../../hooks/TShareSwapper/useTShareSwapperStats';
+import useBorealisSwapperStats from '../../hooks/BorealisSwapper/useBorealisSwapperStats';
 import TokenInput from '../../components/TokenInput';
 import Card from '../../components/Card';
 import CardContent from '../../components/CardContent';
@@ -34,54 +34,54 @@ function isNumeric(n: any) {
 const Sbs: React.FC = () => {
   const { path } = useRouteMatch();
   const { account } = useWallet();
-  const tombFinance = useTombFinance();
-  const [tbondAmount, setTbondAmount] = useState('');
-  const [tshareAmount, setTshareAmount] = useState('');
+  const polarlysFinance = usePolarlysFinance();
+  const [stardustAmount, setStardustAmount] = useState('');
+  const [borealisAmount, setBorealisAmount] = useState('');
 
-  const [approveStatus, approve] = useApprove(tombFinance.TBOND, tombFinance.contracts.TShareSwapper.address);
-  const { onSwapTShare } = useSwapTBondToTShare();
-  const tshareSwapperStat = useTShareSwapperStats(account);
+  const [approveStatus, approve] = useApprove(polarlysFinance.STARDUST, polarlysFinance.contracts.BorealisSwapper.address);
+  const { onSwapBorealis } = useSwapStardustToBorealis();
+  const borealisSwapperStat = useBorealisSwapperStats(account);
 
-  const tshareBalance = useMemo(() => (tshareSwapperStat ? Number(tshareSwapperStat.tshareBalance) : 0), [tshareSwapperStat]);
-  const bondBalance = useMemo(() => (tshareSwapperStat ? Number(tshareSwapperStat.tbondBalance) : 0), [tshareSwapperStat]);
+  const borealisBalance = useMemo(() => (borealisSwapperStat ? Number(borealisSwapperStat.borealisBalance) : 0), [borealisSwapperStat]);
+  const bondBalance = useMemo(() => (borealisSwapperStat ? Number(borealisSwapperStat.stardustBalance) : 0), [borealisSwapperStat]);
 
-  const handleTBondChange = async (e: any) => {
+  const handleStarDustChange = async (e: any) => {
     if (e.currentTarget.value === '') {
-      setTbondAmount('');
-      setTshareAmount('');
+      setStardustAmount('');
+      setBorealisAmount('');
       return
     }
     if (!isNumeric(e.currentTarget.value)) return;
-    setTbondAmount(e.currentTarget.value);
-    const updateTShareAmount = await tombFinance.estimateAmountOfTShare(e.currentTarget.value);
-    setTshareAmount(updateTShareAmount);  
+    setStardustAmount(e.currentTarget.value);
+    const updateBorealisAmount = await polarlysFinance.estimateAmountOfBorealis(e.currentTarget.value);
+    setBorealisAmount(updateBorealisAmount);
   };
 
-  const handleTBondSelectMax = async () => {
-    setTbondAmount(String(bondBalance));
-    const updateTShareAmount = await tombFinance.estimateAmountOfTShare(String(bondBalance));
-    setTshareAmount(updateTShareAmount); 
+  const handleStarDustSelectMax = async () => {
+    setStardustAmount(String(bondBalance));
+    const updateBorealisAmount = await polarlysFinance.estimateAmountOfBorealis(String(bondBalance));
+    setBorealisAmount(updateBorealisAmount);
   };
 
-  const handleTShareSelectMax = async () => {
-    setTshareAmount(String(tshareBalance));
-    const rateTSharePerTomb = (await tombFinance.getTShareSwapperStat(account)).rateTSharePerTomb;
-    const updateTBondAmount = ((BigNumber.from(10).pow(30)).div(BigNumber.from(rateTSharePerTomb))).mul(Number(tshareBalance) * 1e6);
-    setTbondAmount(getDisplayBalance(updateTBondAmount, 18, 6));
+  const handleBorealisSelectMax = async () => {
+    setBorealisAmount(String(borealisBalance));
+    const rateBorealisPerNebula = (await polarlysFinance.getBorealisSwapperStat(account)).rateBorealisPerNebula;
+    const updateStarDustAmount = ((BigNumber.from(10).pow(30)).div(BigNumber.from(rateBorealisPerNebula))).mul(Number(borealisBalance) * 1e6);
+    setStardustAmount(getDisplayBalance(updateStarDustAmount, 18, 6));
   };
 
-  const handleTShareChange = async (e: any) => {
+  const handleBorealisChange = async (e: any) => {
     const inputData = e.currentTarget.value;
     if (inputData === '') {
-      setTshareAmount('');
-      setTbondAmount('');
+      setBorealisAmount('');
+      setStardustAmount('');
       return
     }
     if (!isNumeric(inputData)) return;
-    setTshareAmount(inputData);
-    const rateTSharePerTomb = (await tombFinance.getTShareSwapperStat(account)).rateTSharePerTomb;
-    const updateTBondAmount = ((BigNumber.from(10).pow(30)).div(BigNumber.from(rateTSharePerTomb))).mul(Number(inputData) * 1e6);
-    setTbondAmount(getDisplayBalance(updateTBondAmount, 18, 6));
+    setBorealisAmount(inputData);
+    const rateBorealisPerNebula = (await polarlysFinance.getBorealisSwapperStat(account)).rateBorealisPerNebula;
+    const updateStarDustAmount = ((BigNumber.from(10).pow(30)).div(BigNumber.from(rateBorealisPerNebula))).mul(Number(inputData) * 1e6);
+    setStardustAmount(getDisplayBalance(updateStarDustAmount, 18, 6));
   }
 
   return (
@@ -91,7 +91,7 @@ const Sbs: React.FC = () => {
         {!!account ? (
           <>
             <Route exact path={path}>
-              <PageHeader icon={'🏦'} title="TBond -> TShare Swap" subtitle="Swap TBond to TShare" />
+              <PageHeader icon={'🏦'} title="StarDust -> Borealis Swap" subtitle="Swap StarDust to Borealis" />
             </Route>
             <Box mt={5}>
               <Grid container justify="center" spacing={6}>
@@ -101,55 +101,55 @@ const Sbs: React.FC = () => {
                       <Card>
                         <CardContent>
                           <StyledCardContentInner>
-                            <StyledCardTitle>TBonds</StyledCardTitle>
+                            <StyledCardTitle>StarDusts</StyledCardTitle>
                             <StyledExchanger>
                               <StyledToken>
                                 <StyledCardIcon>
-                                  <TokenSymbol symbol={tombFinance.TBOND.symbol} size={54} />
+                                  <TokenSymbol symbol={polarlysFinance.STARDUST.symbol} size={54} />
                                 </StyledCardIcon>
                               </StyledToken>
                             </StyledExchanger>
                             <Grid item xs={12}>
                               <TokenInput
-                                onSelectMax={handleTBondSelectMax}
-                                onChange={handleTBondChange}
-                                value={tbondAmount}
+                                onSelectMax={handleStarDustSelectMax}
+                                onChange={handleStarDustChange}
+                                value={stardustAmount}
                                 max={bondBalance}
-                                symbol="TBond"
+                                symbol="StarDust"
                               ></TokenInput>
                             </Grid>
-                            <StyledDesc>{`${bondBalance} TBOND Available in Wallet`}</StyledDesc>
+                            <StyledDesc>{`${bondBalance} STARDUST Available in Wallet`}</StyledDesc>
                           </StyledCardContentInner>
                         </CardContent>
                       </Card>
                     </StyledCardWrapper>
-                    <Spacer size="lg"/>
+                    <Spacer size="lg" />
                     <StyledCardWrapper>
                       <Card>
                         <CardContent>
                           <StyledCardContentInner>
-                            <StyledCardTitle>TShare</StyledCardTitle>
+                            <StyledCardTitle>Borealis</StyledCardTitle>
                             <StyledExchanger>
                               <StyledToken>
                                 <StyledCardIcon>
-                                  <TokenSymbol symbol={tombFinance.TSHARE.symbol} size={54} />
+                                  <TokenSymbol symbol={polarlysFinance.BOREALIS.symbol} size={54} />
                                 </StyledCardIcon>
                               </StyledToken>
                             </StyledExchanger>
                             <Grid item xs={12}>
                               <TokenInput
-                                onSelectMax={handleTShareSelectMax}
-                                onChange={handleTShareChange}
-                                value={tshareAmount}
-                                max={tshareBalance}
-                                symbol="TShare"
+                                onSelectMax={handleBorealisSelectMax}
+                                onChange={handleBorealisChange}
+                                value={borealisAmount}
+                                max={borealisBalance}
+                                symbol="Borealis"
                               ></TokenInput>
                             </Grid>
-                            <StyledDesc>{`${tshareBalance} TSHARE Available in Swapper`}</StyledDesc>
+                            <StyledDesc>{`${borealisBalance} BOREALIS Available in Swapper`}</StyledDesc>
                           </StyledCardContentInner>
                         </CardContent>
                       </Card>
-              
+
                     </StyledCardWrapper>
                   </StyledCardsWrapper>
                 </StyledBoardroom>
@@ -162,26 +162,26 @@ const Sbs: React.FC = () => {
                   <Card>
                     <CardContent>
                       <StyledApproveWrapper>
-                      {approveStatus !== ApprovalState.APPROVED ? (
-                        <Button
-                          disabled={approveStatus !== ApprovalState.NOT_APPROVED}
-                          color="primary"
-                          variant="contained"
-                          onClick={approve}
-                          size="medium"
-                        >
-                          Approve TBOND
-                        </Button>
-                      ) : (
-                        <Button
-                          color="primary"
-                          variant="contained"
-                          onClick={() => onSwapTShare(tbondAmount.toString())}
-                          size="medium"
-                        >
-                          Swap
-                        </Button>
-                      )}
+                        {approveStatus !== ApprovalState.APPROVED ? (
+                          <Button
+                            disabled={approveStatus !== ApprovalState.NOT_APPROVED}
+                            color="primary"
+                            variant="contained"
+                            onClick={approve}
+                            size="medium"
+                          >
+                            Approve STARDUST
+                          </Button>
+                        ) : (
+                          <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={() => onSwapBorealis(stardustAmount.toString())}
+                            size="medium"
+                          >
+                            Swap
+                          </Button>
+                        )}
                       </StyledApproveWrapper>
                     </CardContent>
                   </Card>

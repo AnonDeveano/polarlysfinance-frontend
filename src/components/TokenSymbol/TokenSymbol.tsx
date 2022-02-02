@@ -1,16 +1,16 @@
 import React from 'react';
 
 //Graveyard ecosystem logos
-import tombLogo from '../../assets/img/crypto_tomb_cash.svg';
-import tShareLogo from '../../assets/img/crypto_tomb_share.svg';
-import tombLogoPNG from '../../assets/img/crypto_tomb_cash.f2b44ef4.png';
-import tShareLogoPNG from '../../assets/img/crypto_tomb_share.bf1a6c52.png';
-import tBondLogo from '../../assets/img/crypto_tomb_bond.svg';
+import nebulaLogo from '../../assets/img/crypto_nebula_cash.svg';
+import borealisLogo from '../../assets/img/crypto_nebula_share.svg';
+import nebulaLogoPNG from '../../assets/img/crypto_nebula_cash.f2b44ef4.png';
+import borealisLogoPNG from '../../assets/img/crypto_nebula_share.bf1a6c52.png';
+import starDustLogo from '../../assets/img/crypto_nebula_bond.svg';
 
-import tombFtmLpLogo from '../../assets/img/tomb_ftm_lp.png';
-import tshareFtmLpLogo from '../../assets/img/tshare_ftm_lp.png';
+import nebulaNearLpLogo from '../../assets/img/nebula_near_lp.png';
+import borealisNearLpLogo from '../../assets/img/borealis_near_lp.png';
 
-import wftmLogo from '../../assets/img/ftm_logo_blue.svg';
+import wnearLogo from '../../assets/img/near_logo_blue.svg';
 import booLogo from '../../assets/img/spooky.png';
 import zooLogo from '../../assets/img/zoo_logo.svg';
 import shibaLogo from '../../assets/img/shiba_logo.svg';
@@ -18,17 +18,17 @@ import shibaLogo from '../../assets/img/shiba_logo.svg';
 const logosBySymbol: { [title: string]: string } = {
   //Real tokens
   //=====================
-  TOMB: tombLogo,
-  TOMBPNG: tombLogoPNG,
-  TSHAREPNG: tShareLogoPNG,
-  TSHARE: tShareLogo,
-  TBOND: tBondLogo,
-  WFTM: wftmLogo,
+  NEBULA: nebulaLogo,
+  NEBULAPNG: nebulaLogoPNG,
+  BOREALISPNG: borealisLogoPNG,
+  BOREALIS: borealisLogo,
+  STARDUST: starDustLogo,
+  WNEAR: wnearLogo,
   BOO: booLogo,
   SHIBA: shibaLogo,
   ZOO: zooLogo,
-  'TOMB-FTM-LP': tombFtmLpLogo,
-  'TSHARE-FTM-LP': tshareFtmLpLogo,
+  'NEBULA-NEAR-LP': nebulaNearLpLogo,
+  'BOREALIS-NEAR-LP': borealisNearLpLogo,
 };
 
 type LogoProps = {

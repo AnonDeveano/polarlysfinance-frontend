@@ -14,9 +14,9 @@ import useHarvest from '../../../hooks/useHarvest';
 
 import { getDisplayBalance } from '../../../utils/formatBalance';
 import TokenSymbol from '../../../components/TokenSymbol';
-import { Bank } from '../../../tomb-finance';
-import useTombStats from '../../../hooks/useTombStats';
-import useShareStats from '../../../hooks/usetShareStats';
+import { Bank } from '../../../polarlys-finance';
+import useNebulaStats from '../../../hooks/useNebulaStats';
+import useBorealisStats from '../../../hooks/useBorealisStats';
 
 interface HarvestProps {
   bank: Bank;
@@ -25,11 +25,11 @@ interface HarvestProps {
 const Harvest: React.FC<HarvestProps> = ({ bank }) => {
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
   const { onReward } = useHarvest(bank);
-  const tombStats = useTombStats();
-  const tShareStats = useShareStats();
+  const nebulaStats = useNebulaStats();
+  const borealisStats = useBorealisStats();
 
-  const tokenName = bank.earnTokenName === 'TSHARE' ? 'TSHARE' : 'TOMB';
-  const tokenStats = bank.earnTokenName === 'TSHARE' ? tShareStats : tombStats;
+  const tokenName = bank.earnTokenName === 'BOREALIS' ? 'BOREALIS' : 'NEBULA';
+  const tokenStats = bank.earnTokenName === 'BOREALIS' ? borealisStats : nebulaStats;
   const tokenPriceInDollars = useMemo(
     () => (tokenStats ? Number(tokenStats.priceInDollars).toFixed(2) : null),
     [tokenStats],
