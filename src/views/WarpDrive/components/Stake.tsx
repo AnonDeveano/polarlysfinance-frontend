@@ -22,13 +22,13 @@ import { getDisplayBalance } from '../../../utils/formatBalance';
 import DepositModal from './DepositModal';
 import WithdrawModal from './WithdrawModal';
 import usePolarlysFinance from '../../../hooks/usePolarlysFinance';
-import ProgressCountdown from './../components/ProgressCountdown';
+import ProgressCountdown from './ProgressCountdown';
 import useStakedBalanceOnWarpDrive from '../../../hooks/useStakedBalanceOnWarpDrive';
 import useStakedTokenPriceInDollars from '../../../hooks/useStakedTokenPriceInDollars';
 import useUnstakeTimerWarpDrive from '../../../hooks/warpdrive/useUnstakeTimerWarpDrive';
 import TokenSymbol from '../../../components/TokenSymbol';
 import useStakeToWarpDrive from '../../../hooks/useStakeToWarpDrive';
-import withdrawBorealisFromWarpDrive from '../../../hooks/withdrawBorealisFromWarpDrive';
+import withdrawBorealisFromWarpDrive from '../../../hooks/useWithdrawFromWarpDrive';
 
 const Stake: React.FC = () => {
   const polarlysFinance = usePolarlysFinance();

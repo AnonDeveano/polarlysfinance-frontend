@@ -11,9 +11,6 @@ import nebulaNearLpLogo from '../../assets/img/nebula_near_lp.png';
 import borealisNearLpLogo from '../../assets/img/borealis_near_lp.png';
 
 import wnearLogo from '../../assets/img/near_logo_blue.svg';
-import booLogo from '../../assets/img/spooky.png';
-import zooLogo from '../../assets/img/zoo_logo.svg';
-import shibaLogo from '../../assets/img/shiba_logo.svg';
 
 const logosBySymbol: { [title: string]: string } = {
   //Real tokens
@@ -24,9 +21,6 @@ const logosBySymbol: { [title: string]: string } = {
   BOREALIS: borealisLogo,
   STARDUST: starDustLogo,
   WNEAR: wnearLogo,
-  BOO: booLogo,
-  SHIBA: shibaLogo,
-  ZOO: zooLogo,
   'NEBULA-NEAR-LP': nebulaNearLpLogo,
   'BOREALIS-NEAR-LP': borealisNearLpLogo,
 };
